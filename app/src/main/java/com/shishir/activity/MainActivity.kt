@@ -3,6 +3,7 @@ package com.shishir.activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
     private lateinit var nxtBtn: Button
+    private lateinit var sendNxtAct: EditText
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -22,10 +24,13 @@ class MainActivity : AppCompatActivity() {
         }
         Toast.makeText(this@MainActivity, "On Created is Called", Toast.LENGTH_SHORT).show()
         this.nxtBtn= findViewById(R.id.goToNxt)
+        this.sendNxtAct= findViewById(R.id.sendNxtAct)
         nxtBtn.setOnClickListener{
-            Intent(this@MainActivity, MainActivity2::class.java).also {
-                startActivity(it)
-            }
+            val intent= Intent(this@MainActivity, MainActivity2::class.java)
+            intent.putExtra(Constants.INTENT_MESSAGE_KEY,sendNxtAct.text.toString())
+            intent.putExtra(Constants.INTENT_MESSAGE2_KEY, "Another Message from First Activity")
+            intent.putExtra(Constants.INTENT_NUMBER, 123.24)
+            startActivity(intent)
         }
 
     }
