@@ -4,8 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -13,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat
 class MainActivity : AppCompatActivity() {
     private lateinit var nxtBtn: Button
     private lateinit var sendNxtAct: EditText
+    private lateinit var intReturn: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -25,12 +28,20 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this@MainActivity, "On Created is Called", Toast.LENGTH_SHORT).show()
         this.nxtBtn= findViewById(R.id.goToNxt)
         this.sendNxtAct= findViewById(R.id.sendNxtAct)
+        intReturn= findViewById(R.id.intReturn)
+        val getResult=
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+                if(it.resultCode==Constants.RETURN_RESULT){
+                    val message= it.data!!.getStringExtra(Constants.INTENT_MESSAGE2_KEY)
+                    intReturn.text= message
+                }
+            }
         nxtBtn.setOnClickListener{
             val intent= Intent(this@MainActivity, MainActivity2::class.java)
             intent.putExtra(Constants.INTENT_MESSAGE_KEY,sendNxtAct.text.toString())
             intent.putExtra(Constants.INTENT_MESSAGE2_KEY, "Another Message from First Activity")
             intent.putExtra(Constants.INTENT_NUMBER, 123.24)
-            startActivity(intent)
+            getResult.launch(intent)
         }
 
     }

@@ -29,11 +29,13 @@ class MainActivity2 : AppCompatActivity() {
             val num= data.getDouble(Constants.INTENT_NUMBER)
             viewDataA1.text= (msg1+"\n"+msg2+"\n"+num)
         }
+
         prevbtn= findViewById(R.id.goToPrev)
         prevbtn.setOnClickListener{
-            Intent(this@MainActivity2, MainActivity::class.java).also{
-                startActivity(it)
-            }
+            val intent=intent
+            intent.putExtra(Constants.INTENT_MESSAGE2_KEY, "Hello From 2nd Activity")
+            setResult(Constants.RETURN_RESULT,intent)
+            finish()
         }
     }
 }
